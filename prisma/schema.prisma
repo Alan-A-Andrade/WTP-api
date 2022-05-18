@@ -14,4 +14,39 @@ model users {
   id      Int     @id       @default(autoincrement())
   email   String  @unique
   trainer String
+  password String
+  createAt DateTime @default(now())
+  userSettings  userSettings[]
+  userPokemons  userPokemons[]
+}
+
+model userSettings {
+    id      Int     @id       @default(autoincrement())
+    userId  Int     @unique
+    users    users  @relation(fields: [userId], references: [id])
+    colorRed Int
+    colorBlue Int
+    colorGreen Int
+    language  String
+    fontSize String
+}
+
+model pokemons {
+  id        Int     @id       @default(autoincrement())
+  pokemonId Int     @unique
+  name      String
+  spriteURL String
+  blackSpriteURL  String
+  userPokemons  userPokemons[]
+}
+
+model userPokemons {
+  userId      Int
+  pokemonId   Int
+  users       users  @relation(fields: [userId], references: [id])
+  pokemons    pokemons  @relation(fields: [pokemonId], references: [id])
+  tentatives  Int
+
+  @@id([userId,pokemonId])
+
 }
