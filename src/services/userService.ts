@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userRepository from '../repositories/userRepository.js';
-import { CreateUserData } from '../interfaces/index.js';
+import { CreateUserData, CreateUserSettingsData } from '../interfaces/index.js';
 import {
   conflictError,
   notFoundError,
@@ -47,9 +47,21 @@ async function truncate() {
   await userRepository.truncate();
 }
 
+async function updateSettings(userId:number, createUserSettingsData: CreateUserSettingsData) {
+  await userRepository.upsertUserSettings(userId, createUserSettingsData);
+}
+
+async function findSettings(userId:number) {
+  const userSettings = await userRepository.findSettingsByUserId(userId);
+
+  return userSettings;
+}
+
 export default {
   signUp,
   signIn,
   findById,
-  truncate
+  truncate,
+  updateSettings,
+  findSettings
 };
