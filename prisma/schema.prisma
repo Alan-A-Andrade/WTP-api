@@ -22,13 +22,13 @@ model users {
 
 model userSettings {
     id      Int     @id       @default(autoincrement())
+    user    users   @relation(fields: [userId], references: [id])
     userId  Int     @unique
-    users    users  @relation(fields: [userId], references: [id])
     colorRed Int
     colorBlue Int
     colorGreen Int
     language  String
-    fontSize String
+    fontSize Int
 }
 
 model pokemons {

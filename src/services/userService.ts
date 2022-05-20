@@ -20,10 +20,13 @@ async function signUp(createUserData: CreateUserData) {
 
 async function signIn(loginData: CreateUserData) {
   const user = await getUserOrFail(loginData);
+  const userSettings = await userRepository.findSettingsByUserId(user.id);
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
-  return token;
+  const data = { userSettings, auth: { token, trainer: user.trainer } };
+
+  return data;
 }
 
 async function findById(id: number) {
@@ -57,11 +60,16 @@ async function findSettings(userId:number) {
   return userSettings;
 }
 
+async function deleteSettings(userId:number) {
+  await userRepository.deleteUserSettings(userId);
+}
+
 export default {
   signUp,
   signIn,
   findById,
   truncate,
   updateSettings,
-  findSettings
+  findSettings,
+  deleteSettings
 };

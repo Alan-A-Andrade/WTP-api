@@ -12,12 +12,30 @@ async function signUp(req: Request, res: Response) {
 async function logIn(req: Request, res: Response) {
   const user = req.body;
 
-  const token = await userService.signIn(user);
+  const logInData = await userService.signIn(user);
 
-  res.send({ token });
+  res.send(logInData);
+}
+async function upsertSettings(req: Request, res: Response) {
+  const user = res.locals.user;
+
+  const settings = req.body;
+
+  await userService.updateSettings(user.id, settings);
+
+  res.sendStatus(200);
+}
+async function deleteSettings(req: Request, res: Response) {
+  const user = res.locals.user;
+
+  await userService.deleteSettings(user.id);
+
+  res.sendStatus(200);
 }
 
 export default {
   signUp,
-  logIn
+  logIn,
+  upsertSettings,
+  deleteSettings
 };

@@ -25,10 +25,18 @@ async function findSettingsByUserId(userId:number) {
 }
 
 async function upsertUserSettings(userId: number, CreateUserSettingsData: CreateUserSettingsData) {
+  const data = { userId, ...CreateUserSettingsData };
+
   return client.userSettings.upsert({
     where: { userId },
-    update: CreateUserSettingsData,
-    create: CreateUserSettingsData
+    update: data,
+    create: data
+  });
+}
+
+async function deleteUserSettings(userId: number) {
+  return client.userSettings.delete({
+    where: { userId }
   });
 }
 
@@ -43,6 +51,7 @@ async function truncate() {
 }
 
 export default {
+  deleteUserSettings,
   upsertUserSettings,
   findSettingsByUserId,
   findByEmail,
