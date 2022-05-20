@@ -32,4 +32,10 @@ userRouter.delete(
   userController.deleteSettings
 );
 
+userRouter.get(
+  '/pokemons',
+  ensureAuthenticatedMiddleware,
+  userController.getPokemons
+);
+
 export default userRouter;

@@ -33,9 +33,18 @@ async function deleteSettings(req: Request, res: Response) {
   res.sendStatus(200);
 }
 
+async function getPokemons(req: Request, res: Response) {
+  const user = res.locals.user;
+
+  const pokemonList = await userService.getUsersPokemons(user.id);
+
+  res.send(pokemonList);
+}
+
 export default {
   signUp,
   logIn,
   upsertSettings,
-  deleteSettings
+  deleteSettings,
+  getPokemons
 };

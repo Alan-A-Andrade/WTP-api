@@ -8,6 +8,7 @@ import {
   notFoundError,
   unauthorizedError
 } from '../utils/errorUtils.js';
+import userPokemonRepository from '../repositories/userPokemonRepository.js';
 
 async function signUp(createUserData: CreateUserData) {
   const existingUser = await userRepository.findByEmail(createUserData.email);
@@ -64,6 +65,12 @@ async function deleteSettings(userId:number) {
   await userRepository.deleteUserSettings(userId);
 }
 
+async function getUsersPokemons(userId:number) {
+  const pokemonList = await userPokemonRepository.findAllbyUserId(userId);
+
+  return pokemonList;
+}
+
 export default {
   signUp,
   signIn,
@@ -71,5 +78,6 @@ export default {
   truncate,
   updateSettings,
   findSettings,
-  deleteSettings
+  deleteSettings,
+  getUsersPokemons
 };
